@@ -1,3 +1,5 @@
+module plfa.part1.Naturals where
+
 import Relation.Binary.PropositionalEquality as Eq
 open Eq using (_≡_; refl)
 open Eq.≡-Reasoning using (begin_; step-≡-∣; _∎)
@@ -200,79 +202,39 @@ inc (l I O) = l I I
 inc (l O I) = l I O
 inc (l I I) = (inc l) O O
 
-_ =
-  begin
-    inc (⟨⟩ O)
-  ≡⟨⟩
-    ⟨⟩ I
-  ∎
+_ : inc (⟨⟩ O) ≡ ⟨⟩ I
+_ = refl
 
-_ =
-  begin
-    inc (⟨⟩ I)
-  ≡⟨⟩
-    ⟨⟩ I O
-  ∎
+_ : inc (⟨⟩ I) ≡ ⟨⟩ I O
+_ = refl
 
-_ =
-  begin
-    inc (⟨⟩ I O)
-  ≡⟨⟩
-    ⟨⟩ I I
-  ∎
+_ : inc (⟨⟩ I O) ≡ ⟨⟩ I I
+_ = refl
 
-_ =
-  begin
-    inc (⟨⟩ I I)
-  ≡⟨⟩
-    ⟨⟩ I O O
-  ∎
+_ : inc (⟨⟩ I I) ≡ ⟨⟩ I O O
+_ = refl
 
-_ =
-  begin
-    inc (⟨⟩ I O O)
-  ≡⟨⟩
-    ⟨⟩ I O I
-  ∎
+_ : inc (⟨⟩ I O O) ≡ ⟨⟩ I O I
+_ = refl
 
 to : ℕ → Bin
 to 0 = ⟨⟩ O
 to (suc n) = inc (to n)
 
-_ =
-  begin
-    to 0
-  ≡⟨⟩
-    ⟨⟩ O
-  ∎
+_ : to 0 ≡ ⟨⟩ O
+_ = refl
 
-_ =
-  begin
-    to 1
-  ≡⟨⟩
-    ⟨⟩ I
-  ∎
+_ : to 1 ≡ ⟨⟩ I
+_ = refl
 
-_ =
-  begin
-    to 2
-  ≡⟨⟩
-    ⟨⟩ I O
-  ∎
+_ : to 2 ≡ ⟨⟩ I O
+_ = refl
 
-_ =
-  begin
-    to 3
-  ≡⟨⟩
-    ⟨⟩ I I
-  ∎
+_ : to 3 ≡ ⟨⟩ I I
+_ = refl
 
-_ =
-  begin
-    to 4
-  ≡⟨⟩
-    ⟨⟩ I O O
-  ∎
+_ : to 4 ≡ ⟨⟩ I O O
+_ = refl
 
 from : Bin → ℕ
 from ⟨⟩ = 0
@@ -283,40 +245,20 @@ from (l O I) = 4 * from l + 1
 from (l I O) = 4 * from l + 2
 from (l I I) = 4 * from l + 3
 
-_ =
-  begin
-    from (⟨⟩ O)
-  ≡⟨⟩
-    0
-  ∎
+_ : from (⟨⟩ O) ≡ 0
+_ = refl
 
-_ =
-  begin
-    from (⟨⟩ I)
-  ≡⟨⟩
-    1
-  ∎
+_ : from (⟨⟩ I) ≡ 1
+_ = refl
 
-_ =
-  begin
-    from (⟨⟩ I O)
-  ≡⟨⟩
-    2
-  ∎
+_ : from (⟨⟩ I O) ≡ 2
+_ = refl
 
-_ =
-  begin
-    from (⟨⟩ I I)
-  ≡⟨⟩
-    3
-  ∎
+_ : from (⟨⟩ I I) ≡ 3
+_ = refl
 
-_ =
-  begin
-    from (⟨⟩ I O O)
-  ≡⟨⟩
-    4
-  ∎
+_ : from (⟨⟩ I O O) ≡ 4
+_ = refl
 
 
 -- Representations are not unique due to leading zeros
