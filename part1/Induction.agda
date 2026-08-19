@@ -258,12 +258,8 @@ data Bin : Set where
 
 inc : Bin → Bin
 inc ⟨⟩ = ⟨⟩ I
-inc (⟨⟩ O) = ⟨⟩ I
-inc (⟨⟩ I) = ⟨⟩ I O
-inc (l O O) = l O I
-inc (l I O) = l I I
-inc (l O I) = l I O
-inc (l I I) = (inc l) O O
+inc (b O) = b I
+inc (b I) = inc b O
 
 to : ℕ → Bin
 to 0 = ⟨⟩ O
@@ -271,54 +267,13 @@ to (suc n) = inc (to n)
 
 from : Bin → ℕ
 from ⟨⟩ = 0
-from (⟨⟩ O) = 0
-from (⟨⟩ I) = 1
-from (l O O) = 4 * from l
-from (l O I) = 4 * from l + 1
-from (l I O) = 4 * from l + 2
-from (l I I) = 4 * from l + 3
-
-n+1≡suc-n : ∀ (n : ℕ) → n + 1 ≡ suc n
-n+1≡suc-n zero = refl
-n+1≡suc-n (suc n) rewrite n+1≡suc-n n = refl
-
-n+3≡suc-n+2 : ∀ (n : ℕ) → n + 3 ≡ suc (n + 2)
-n+3≡suc-n+2 zero = refl
-n+3≡suc-n+2 (suc n) rewrite n+3≡suc-n+2 n = refl
-
-n+2≡suc-n+1 : ∀ (n : ℕ) → n + 2 ≡ suc (n + 1)
-n+2≡suc-n+1 zero = refl
-n+2≡suc-n+1 (suc n) rewrite n+2≡suc-n+1 n = refl
-
-n+4≡suc-n+3 : ∀ (n : ℕ) → n + 4 ≡ suc (n + 3)
-n+4≡suc-n+3 zero = refl
-n+4≡suc-n+3 (suc n) rewrite n+4≡suc-n+3 n = refl
+from (b O) = 2 * (from b)
+from (b I) = 2 * (from b) + 1
 
 from-inc-b≡suc-from-b : ∀ (b : Bin) → from (inc b) ≡ suc (from b)
 from-inc-b≡suc-from-b ⟨⟩ = refl
-from-inc-b≡suc-from-b (⟨⟩ O) = refl
-from-inc-b≡suc-from-b (⟨⟩ I) = refl
-from-inc-b≡suc-from-b (l O O) rewrite n+1≡suc-n (from l + (from l + (from l + (from l + zero)))) = refl
-from-inc-b≡suc-from-b (l I O) rewrite n+3≡suc-n+2 (from l + (from l + (from l + (from l + zero)))) = refl
-from-inc-b≡suc-from-b (l O I) rewrite n+2≡suc-n+1 (from l + (from l + (from l + (from l + zero)))) = refl
-from-inc-b≡suc-from-b (l I I)
-  rewrite from-inc-b≡suc-from-b l
-  | +-identityʳ (suc (from l))
-  | +-identityʳ (from l)
-  | sym (n+4≡suc-n+3 (from l + (from l + (from l + from l))))
-  | sym (n+1≡suc-n (from l + suc (from l + suc (from l))))
-  | sym (n+1≡suc-n (from l + suc (from l)))
-  | sym (n+1≡suc-n (from l))
-  | +-assoc (from l) (from l + 1) 1
-  | +-assoc (from l) 1 1
-  | +-assoc (from l) (from l + (from l + 2)) 1
-  | +-assoc (from l) (from l + 2) 1
-  | +-assoc (from l) 2 1
-  | sym (+-assoc (from l) (from l) 3)
-  | sym (+-assoc (from l) (from l + from l) 3)
-  | sym (+-assoc (from l) (from l + (from l + from l)) 3)
-  | n+4≡suc-n+3 (from l + (from l + (from l + from l)))
-  = refl
+from-inc-b≡suc-from-b (b O) rewrite +-identityʳ (from b) | +-comm (from b + from b) 1 = refl
+from-inc-b≡suc-from-b (b I) rewrite +-identityʳ (from (inc b)) | +-identityʳ (from b) | from-inc-b≡suc-from-b b | +-comm (from b + from b) 1 | +-suc (from b) (from b) = refl
 
 -- to (from b) ≡ b doesn't hold
 counterexample : to (from (⟨⟩ O O I O I I)) ≡ ⟨⟩ I O I I
@@ -326,4 +281,4 @@ counterexample = refl
 
 from-to-n≡n : ∀ (n : ℕ) → from (to n) ≡ n
 from-to-n≡n zero = refl
-from-to-n≡n (suc n) rewrite from-inc-b≡suc-from-b (to n) | from-to-n≡n n =  refl
+from-to-n≡n (suc n) rewrite from-inc-b≡suc-from-b (to n) | from-to-n≡n n = refl

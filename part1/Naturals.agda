@@ -195,12 +195,8 @@ data Bin : Set where
 
 inc : Bin → Bin
 inc ⟨⟩ = ⟨⟩ I
-inc (⟨⟩ O) = ⟨⟩ I
-inc (⟨⟩ I) = ⟨⟩ I O
-inc (l O O) = l O I
-inc (l I O) = l I I
-inc (l O I) = l I O
-inc (l I I) = (inc l) O O
+inc (b O) = b I
+inc (b I) = inc b O
 
 _ : inc (⟨⟩ O) ≡ ⟨⟩ I
 _ = refl
@@ -238,12 +234,8 @@ _ = refl
 
 from : Bin → ℕ
 from ⟨⟩ = 0
-from (⟨⟩ O) = 0
-from (⟨⟩ I) = 1
-from (l O O) = 4 * from l
-from (l O I) = 4 * from l + 1
-from (l I O) = 4 * from l + 2
-from (l I I) = 4 * from l + 3
+from (b O) = 2 * (from b)
+from (b I) = 2 * (from b) + 1
 
 _ : from (⟨⟩ O) ≡ 0
 _ = refl
